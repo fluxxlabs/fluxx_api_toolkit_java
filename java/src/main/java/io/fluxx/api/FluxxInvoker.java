@@ -1,14 +1,23 @@
 package io.fluxx.api;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -44,14 +53,14 @@ public class FluxxInvoker {
 
     protected String getToken() {
         try {
-            HttpClient httpClient = new HttpClient();
-            PostMethod method = new PostMethod(endpoint + "/oauth/token");
-            method.addParameter("grant_type", "client_credentials");
-            method.addParameter("client_id", applicationId);
-            method.addParameter("client_secret", applicationSecret);
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost method = new HttpPost(endpoint + "/oauth/token");
+            Map params = ImmutableMap.of("grant_type", "client_credentials", "client_id", applicationId, "client_secret", applicationSecret);
+            method.setEntity(mapToFormEntity(params));
 
-            int responseCode = httpClient.executeMethod(method);
-            String responseBody = read(method.getResponseBodyAsStream());
+            HttpResponse response = httpClient.execute(method);
+            int responseCode = response.getStatusLine().getStatusCode();
+            String responseBody = read(response.getEntity().getContent());
 
             if (responseCode != HttpStatus.SC_OK) {
                 String message = "unexpected status code: " + responseCode + ", body: " + responseBody;
@@ -89,15 +98,14 @@ public class FluxxInvoker {
     public String rawInvoke(String uri, Map<String,String> params) {
         try {
             String fullUri = endpoint + "/api/rest/v1/" + uri;
-            PostMethod method = new PostMethod(fullUri);
-            method.addRequestHeader("Authorization", "Bearer " + token);
-            for (Map.Entry<String,String> entry : params.entrySet()) {
-                method.addParameter( entry.getKey(), entry.getValue() );
-            }
+            HttpPost method = new HttpPost(fullUri);
+            method.addHeader("Authorization", "Bearer " + token);
+            method.setEntity(mapToFormEntity(params));
 
-            HttpClient httpClient = new HttpClient();
-            int responseCode  = httpClient.executeMethod(method);
-            String responseBody = read(method.getResponseBodyAsStream());
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpResponse response = httpClient.execute(method);
+            int responseCode = response.getStatusLine().getStatusCode();
+            String responseBody = read(response.getEntity().getContent());
             log.debug("response code: " + responseCode);
             if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
                 log.warn("unauthorized response: " + responseBody);
@@ -114,6 +122,14 @@ public class FluxxInvoker {
         catch (IOException e) {
             throw new RuntimeException(e.toString(), e);
         }
+    }
+
+    protected HttpEntity mapToFormEntity(Map<String,String> params) throws UnsupportedEncodingException {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        for (Map.Entry<String,String> entry : params.entrySet()) {
+            pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+        }
+        return new UrlEncodedFormEntity(pairs);
     }
 
 

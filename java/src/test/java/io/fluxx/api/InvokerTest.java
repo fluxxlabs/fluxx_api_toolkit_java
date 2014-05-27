@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,8 @@ public class InvokerTest {
 
     protected static Log log = LogFactory.getLog(InvokerTest.class);
 
-    public static void main(String[] args) {
+    @Test
+    public void filteredGrants() {
 
         Gson gson = new Gson();
 
