@@ -5,7 +5,7 @@
     <groupId>io.fluxx</groupId>
     <artifactId>fluxx-api</artifactId>
     <packaging>jar</packaging>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.5.1</version>
 
     <name>fluxx-api</name>
     <description>Java library and reference code for utilizing the http://fluxx.io REST API</description>
