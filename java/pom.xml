@@ -2,13 +2,53 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>io.fluxx</groupId>
     <artifactId>fluxx-api</artifactId>
-    <name>fluxx-api</name>
-    <version>0.5</version>
+    <packaging>jar</packaging>
+    <version>0.5-SNAPSHOT</version>
 
+    <name>fluxx-api</name>
+    <description>Java library and reference code for utilizing the http://fluxx.io REST API</description>
+    <url>http://fluxx.io/</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:juven/git-demo.git</connection>
+        <developerConnection>scm:git:git@github.com:juven/git-demo.git</developerConnection>
+        <url>git@github.com:juven/git-demo.git</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>elliottjf</id>
+            <name>Joseph Elliott</name>
+            <email>joe@fluxxlabs.com</email>
+        </developer>
+        <developer>
+            <id>eshansen</id>
+            <name>Eric Hansen</name>
+            <email>eric@fluxxlabs.com</email>
+        </developer>
+    </developers>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <!--
     <repositories>
     </repositories>
+    -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -84,6 +124,7 @@
             </plugin>
 
             <!-- Generate the release zip file (run during package step) -->
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -105,6 +146,47 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!--<plugin>-->
                 <!--<artifactId>maven-jar-plugin</artifactId>-->
@@ -116,5 +198,4 @@
             <!--</plugin>-->
         </plugins>
     </build>
-    <packaging>jar</packaging>
 </project>
