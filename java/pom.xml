@@ -1,12 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.fluxx</groupId>
     <artifactId>fluxx-api</artifactId>
     <packaging>jar</packaging>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.5</version>
 
     <name>fluxx-api</name>
     <description>Java library and reference code for utilizing the http://fluxx.io REST API</description>
@@ -108,13 +107,13 @@
                             <target>
                                 <copy todir="${project.build.directory}/lib">
                                     <fileset dir="${project.basedir}/target/">
-                                        <include name="*.jar"/>
+                                        <include name="*.jar" />
                                     </fileset>
-                                    <flattenmapper/>
+                                    <flattenmapper />
                                 </copy>
                                 <copy todir="${project.build.outputDirectory}">
                                     <fileset dir="${project.basedir}/src/main/java/">
-                                        <include name="*.properties"/>
+                                        <include name="*.properties" />
                                     </fileset>
                                 </copy>
                             </target>
