@@ -5,7 +5,7 @@
     <groupId>io.fluxx</groupId>
     <artifactId>fluxx-api</artifactId>
     <packaging>jar</packaging>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.5-SNAPSHOT</version>
 
     <name>fluxx-api</name>
     <description>Java library and reference code for utilizing the http://fluxx.io REST API</description>
@@ -20,9 +20,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:fluxxlabs/fluxx_api_toolkit.git</connection>
-        <developerConnection>scm:git:git@github.com:fluxxlabs/fluxx_api_toolkit.git</developerConnection>
-        <url>git@github.com:fluxxlabs/fluxx_api_toolkit.git</url>
+        <connection>scm:git:git@github.com:fluxxlabs/fluxx_api_toolkit_java.git</connection>
+        <developerConnection>scm:git:git@github.com:fluxxlabs/fluxx_api_toolkit_java.git</developerConnection>
+        <url>git@github.com:fluxxlabs/fluxx_api_toolkit_java.git</url>
     </scm>
 
     <developers>
