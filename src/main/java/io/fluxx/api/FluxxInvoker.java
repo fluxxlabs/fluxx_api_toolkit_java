@@ -76,18 +76,38 @@ public class FluxxInvoker {
         }
     }
 
+    public Map get(String uri, Map<String,String> params) {
+        return invoke( "GET", uri, params);
+    }
+
+    public Map put(String uri, Map<String,String> params) {
+        return invoke( "PUT", uri, params);
+    }
+
+    public Map post(String uri, Map<String,String> params) {
+        return invoke( "POST", uri, params);
+    }
+
+    public Map delete(String uri, Map<String,String> params) {
+        return invoke( "DELETE", uri, params);
+    }
+
     public Map invoke(String uri, Map<String,String> params) {
+        return post(uri, params);
+    }
+
+    public Map invoke(String methodType, String uri, Map<String,String> params) {
         if (token == null)
             refreshToken();
 
         String rawResponse = null;
         try {
-            rawResponse = rawInvoke(uri, params);
+            rawResponse = rawInvoke(methodType, uri, params);
         }
         catch (UnauthorizedStatus e) {
             log.debug("'unauthorized' response - resetting bearer token");
             refreshToken();
-            rawResponse = rawInvoke(uri, params);
+            rawResponse = rawInvoke(uri, methodType, params);
         }
 
         Map parsed = gson.fromJson(rawResponse, HashMap.class);
@@ -95,11 +115,12 @@ public class FluxxInvoker {
         return parsed;
     }
 
-    public String rawInvoke(String uri, Map<String,String> params) {
+    public String rawInvoke(String methodType, String uri, Map<String,String> params) {
         try {
             String fullUri = endpoint + "/api/rest/v1/" + uri;
             HttpPost method = new HttpPost(fullUri);
             method.addHeader("Authorization", "Bearer " + token);
+            method.addHeader("X-HTTP-Method-Override", methodType);
             method.setEntity(mapToFormEntity(params));
 
             HttpClient httpClient = new DefaultHttpClient();
