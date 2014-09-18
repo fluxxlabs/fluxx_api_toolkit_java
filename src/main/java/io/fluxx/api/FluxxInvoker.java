@@ -107,7 +107,7 @@ public class FluxxInvoker {
         catch (UnauthorizedStatus e) {
             log.debug("'unauthorized' response - resetting bearer token");
             refreshToken();
-            rawResponse = rawInvoke(uri, methodType, params);
+            rawResponse = rawInvoke(methodType, uri, params);
         }
 
         Map parsed = gson.fromJson(rawResponse, HashMap.class);
